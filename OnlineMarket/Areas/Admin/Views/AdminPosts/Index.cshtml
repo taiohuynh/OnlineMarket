@@ -1,0 +1,77 @@
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<OnlineMarket.Models.Post>
+
+@{
+	ViewData["Title"] = "Danh sách tin tức";
+	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-header">
+	<div class="header-sub-title">
+		<nav class="breadcrumb breadcrumb-dash">
+			<a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item">Home</a>
+			<span class="breadcrumb-item active">Danh sách tin tức - Trang @ViewBag.CurrentPage</span>
+		</nav>
+	</div>
+</div>
+<div class="card">
+	<h2 style="text-align: left; margin-top: 20px; margin-left: 20px;">Quản lý tin tức</h2>
+	<div class="card-body">
+		<div class="row m-b-30">
+			<div class="col-lg-1,6"></div>
+			<div class="col-lg-4 text-left">
+				<a class="btn btn-primary" asp-controller="AdminPosts" asp-action="Create"><span>Thêm tin tức</span></a>
+			</div>
+		</div>
+		<div class="table-responsive">
+			<table class="table table-hover e-commerce-table">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Tiêu đề</th>
+						<th>Trạng thái</th>
+						<th>#</th>
+					</tr>
+				</thead>
+				<tbody>
+					@if (Model != null)
+					{
+						foreach (var item in Model)
+						{
+							<tr>
+								<td>@item.PostId</td>
+								<td>@item.Title</td>
+								<td>
+									@if (item.Published == true)
+									{
+										<div class="d-flex align-items-center">
+											<div class="badge badge-success badge-dot m-r-10"></div>
+											<div>Public</div>
+										</div>
+									}
+									else
+									{
+										<div class="d-flex align-items-center">
+											<div class="badge badge-success badge-dot m-r-10"></div>
+											<div>Non-public</div>
+										</div>
+									}
+								</td>
+								<td>
+									<a class="btn btn-primary btn-tone m-r-5" asp-area="Admin" asp-controller="AdminPosts" asp-action="Details" asp-route-id="@item.PostId">Chi tiết</a>
+									<a class="btn btn-info btn-tone m-r-5" asp-area="Admin" asp-controller="AdminPosts" asp-action="Edit" asp-route-id="@item.PostId">Sửa</a>
+									<a class="btn btn-danger btn-tone m-r-5" asp-area="Admin" asp-controller="AdminPosts" asp-action="Delete" asp-route-id="@item.PostId">Xóa</a>
+								</td>
+							</tr>
+						}
+					}
+				</tbody>
+			</table>
+			<div aria-label="Page navigation example">
+				<ul class="pagination">
+					<pager class="pager-container" list="@Model" asp-area="Admin" asp-controller="AdminPosts" asp-action="Index" />
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
